@@ -4,7 +4,9 @@ const authRouters = require("./routes/auth.route.js")
 const userRouters = require("./routes/user.route.js")
 const productRouters = require("./routes/product.route.js")
 const adminOrderRouters = require("./routes/adminOrder.route.js")
+const adminProductRouters = require("./routes/adminProduct.route.js")
 const cartItemRouters = require("./routes/cartItem.route.js")
+const cartRouters = require("./routes/cart.route.js")
 const orderRouters = require("./routes/order.route.js")
 const reviewRouters = require("./routes/review.route.js")
 const ratingRouters = require("./routes/rating.route.js")
@@ -24,13 +26,11 @@ app.use("/api/users", userRouters)
 
 app.use("/api/products", productRouters)
 
-const adminProductRouters = require("./routes/adminProduct.route.js")
 app.use("/api/admin/products", adminProductRouters)
 
 app.use("/api/admin/orders", adminOrderRouters)
 
-const cartRouters = require("./routes/cart.route.js")
-app.use("/api/cart/", cartRouters)
+app.use("/api/cart", cartRouters)
 
 app.use("/api/orders", orderRouters)
 
@@ -38,6 +38,6 @@ app.use("/api/reviews", reviewRouters)
 
 app.use("/api/ratings", ratingRouters)
 
-app.use("/api/cart_Items", cartItemRouters)
+app.use("/api/cart_items", cartItemRouters)
 
 module.exports = app

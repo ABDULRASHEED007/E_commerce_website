@@ -5,9 +5,7 @@ const userService = require("../services/user.service.js")
 const updateCartItem = async (userId, cartItemId, cartItemData) => {
     try {
         const item = await findCartItemById(cartItemId);
-        if (!item) {
-            throw new Error("Cart item not found: ", cartItemId)
-        }
+
 
         const user = await userService.findUserById(item.userId)
         if (!user) {
@@ -22,6 +20,7 @@ const updateCartItem = async (userId, cartItemId, cartItemData) => {
             const updatedCartItem = await item.save();
             return updatedCartItem;
         }
+
         else {
             throw new Error("You can't update this cart item")
         }
@@ -32,19 +31,21 @@ const updateCartItem = async (userId, cartItemId, cartItemData) => {
     }
 }
 
+
 const removeCartItem = async (userId, cartItemId) => {
     const cartItem = await findCartItemById(cartItemId);
     const user = await userService.findUserById(userId);
 
     if (user._id.toString() === cartItem.userId.toString()) {
-        await CartItem.findByIdAndDelete(cartItemId)
+        return await CartItem.findByIdAndDelete(cartItemId);
     }
     throw new Error("You can't remove this item")
 
 }
 
 const findCartItemById = async (cartItemId) => {
-    const cartItem = await findCartItemById(cartItemId);
+    const cartItem = await CartItem.findById(cartItemId)
+        .populate("product");
     if (cartItem) {
         return cartItem
     }

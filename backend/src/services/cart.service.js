@@ -6,8 +6,9 @@ const createCart = async (user) => {
     try {
         const cart = new Cart({ user });
         const createdCart = await cart.save();
-        return createdCart
+        return createdCart;
     } catch (error) {
+        // throw new Error("Here is the error");
         throw new Error(error.message);
     }
 
@@ -15,9 +16,9 @@ const createCart = async (user) => {
 
 const findUserCart = async (userId) => {
     try {
-        // let cart = await Cart.findOne({user:userId})
-        let cart = await Cart.findOne({ user: user })
-        let cartItems = await CartItem.find({ cart: cart._id }).populate("product")
+        // let cart = await Cart.findOne({ userId })
+        let cart = await Cart.findOne({ user: userId })
+        let cartItems = await CartItem.find({ cart: cart._id }).populate("product");
 
         cart.cartItems = cartItems;
 
@@ -27,14 +28,18 @@ const findUserCart = async (userId) => {
 
         for (let cartItem of cart.cartItems) {
             totalPrice += cartItem.price;
-            totalDiscountedPrice += cartItem.discountedPrice
-            totalItem += cartItem.quantity
+            totalDiscountedPrice += cartItem.discountedPrice;
+            // totalDiscountedPrice += cartItem.discount;
+            totalItem += cartItem.quantity;
 
         }
 
+
         cart.totalPrice = totalPrice;
         cart.totalItem = totalItem;
+        // cart.discount = cart.cartItems.discount;
         cart.discount = totalPrice - totalDiscountedPrice;
+        cart.totalDiscountedPrice = cart.totalPrice - cart.discount;
 
 
         return cart;
@@ -58,13 +63,13 @@ const addCartItem = async (userId, req) => {
         if (!isPresent) {
             const cartItem = new CartItem({
                 product: product._id,
+                cart: cart._id,
                 quantity: 1,
+                userId,
                 price: product.price,
                 discountedPrice: product.discountedPrice,
-                // userId: userId,
-                userId,
-                cart: cart._id,
                 size: req.size,
+
 
 
             })

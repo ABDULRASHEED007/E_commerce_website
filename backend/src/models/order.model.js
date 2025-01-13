@@ -1,13 +1,14 @@
-const  mongoose = require("mongoose");
+const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema({
-    user:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"users"
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "users"
     },
-    orderItems:[{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"orderItems"
+
+    orderItems: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "orderItems"
     }],
 
     orderDate: {
@@ -19,49 +20,50 @@ const orderSchema = new mongoose.Schema({
         type: Date,
     },
 
-    shippingAddress:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"addresses",
+    shippingAddress: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "addresses",
     },
 
     paymentDetails: {
-        paymentMethod:{
-            type:String,
+
+        paymentMethod: {
+            type: String,
         },
-        transactionId:{
-            type:String,
+        transactionId: {
+            type: String,
         },
-        paymentId:{
-            type:String,
+        paymentId: {
+            type: String,
         },
-        paymentStatus:{
-            type:String,
-            default:"PENDING"
+        paymentStatus: {
+            type: String,
+            default: "PENDING"
         },
 
     },
 
     totalPrice: {
         type: Number,
-        required:true
+        required: true
     },
     totalDiscountedPrice: {
         type: Number,
-        required:true
+        required: true
     },
     discount: {
         type: Number,
-        required:true
+        required: true
     },
     orderStatus: {
         type: String,
-        required:true,
-        default:"PENDING"
+        required: true,
+        default: "PENDING"
 
     },
     totalItem: {
         type: Number,
-        required:true
+        required: true
     },
 
     createdAt: {
@@ -73,5 +75,5 @@ const orderSchema = new mongoose.Schema({
 })
 
 
-const Order=mongoose.model('orders', orderSchema)
-module.exports=Order;
+const Order = mongoose.model('orders', orderSchema)
+module.exports = Order;

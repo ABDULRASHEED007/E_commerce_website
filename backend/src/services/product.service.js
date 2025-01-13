@@ -9,6 +9,7 @@ const createProduct = async (reqData) => {
             name: reqData.topLevelCategory,
             level: 1
         })
+        await topLevel.save();
     }
 
     let secondLevel = await Category.findOne({ name: reqData.secondLevelCategory, parentCategory: topLevel._id, })
@@ -20,6 +21,8 @@ const createProduct = async (reqData) => {
             level: 2
 
         })
+
+        await secondLevel.save();
     }
 
     let thirdLevel = await Category.findOne({ name: reqData.thirdLevelCategory, parentCategory: secondLevel._id, })
@@ -30,6 +33,8 @@ const createProduct = async (reqData) => {
             parentCategory: secondLevel._id,
             level: 3
         })
+
+        await thirdLevel.save();
     }
 
     const product = new Product({
@@ -54,8 +59,8 @@ const createProduct = async (reqData) => {
 const deleteProduct = async (productId) => {
     const product = await findProductById(productId)
 
-    await Product.findByIdAndDelete(productId);
-    // await Product.findByIdAndDelete(product);
+    await Product.findByIdAndDelete(product);
+    // await Product.findByIdAndDelete(productId);
     return "Product deleted Successfully"
 }
 

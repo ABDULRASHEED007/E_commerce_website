@@ -1,6 +1,6 @@
 const Address = require("../models/address.model.js");
 const Order = require("../models/order.model.js");
-// const Order = require("../models/order.model.js");
+const OrderItem = require("../models/orderItems.model.js");
 const cartService = require("../services/cart.service.js")
 
 
@@ -16,16 +16,18 @@ const createOrder = async (user, shipAddress) => {
         address.user = user;
         await address.save()
 
-        user.addresses.push(address);
-        await user.save();
+        user.address.push(address);
+        // await user.save();
 
+        // user.addresses.push(address);
+        await user.save();
     }
 
     const cart = await cartService.findUserCart(user._id);
     const orderItems = [];
 
     for (const item of cart.cartItems) {
-        const orderItem = new orderItems({
+        const orderItem = new OrderItem({
             product: item.product,
             quantity: item.quantity,
             price: item.price,
@@ -46,12 +48,13 @@ const createOrder = async (user, shipAddress) => {
         totalDiscountedPrice: cart.totalDiscountedPrice,
         discount: cart.discount,
         totalItem: cart.totalItem,
-        shipAddress: address,
+        shippingAddress: address,
+        // shipAddress: address,
+        // shippingAddress: cart.address,
 
     })
 
-    // const savedOrder = await createdOrder.save();
-    const savedOrder = await createOrder.save();
+    const savedOrder = await createdOrder.save();
 
     return savedOrder
 
